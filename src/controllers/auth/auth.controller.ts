@@ -1,13 +1,15 @@
+import User from '../../models/User'
+import { Request,Response } from 'express'
 
+export const signUp = async (req: Request,res: Response)=>{
 
-export const signUp = ()=>{
-
-}
-
-export const signIn = ()=>{
     
 }
 
-export const profile = ()=>{
+export const signIn = async (req: Request,res: Response)=>{
+    
+}
+
+export const profile = async (req: Request,res: Response)=>{
     
 }
