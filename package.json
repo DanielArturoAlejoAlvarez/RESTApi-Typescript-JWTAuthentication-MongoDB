@@ -1,0 +1,21 @@
+{
+  "name": "restapi-typescript-jwt",
+  "version": "1.0.0",
+  "description": "Software of development with Typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Typescript",
+    "Express",
+    "Mongoose",
+    "Bcrypt",
+    "JWT"
+  ],
+  "author": "Daniel Alejo Alvarez",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  }
+}
