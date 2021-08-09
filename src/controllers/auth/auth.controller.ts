@@ -1,21 +1,22 @@
-import User from '../../models/User'
+import User,{IUser} from '../../models/User'
 import { Request,Response } from 'express'
+//import jwt from 'jsonwebtoken'
 
 export const signUp = async (req: Request,res: Response)=>{
 
     try {
         console.log(req.body)
         const {displayName,email,username,password,avatar,roles,status} = req.body
-        const newUser = new User({
+        const newUser: IUser = new User({
             displayName,
             email,
             username,
             password,
             avatar,
-            roles,
             status
         })
 
+        newUser.encryptPassword(password)
         const user = await newUser.save()
         return res.json({
             msg: 'User registered successfully!',
