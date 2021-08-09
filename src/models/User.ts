@@ -1,4 +1,5 @@
 import { Schema,model } from 'mongoose'
+import bcrypt from 'bcrypt'
 
 const userSchema = new Schema({
     displayName: String,
@@ -36,5 +37,9 @@ const userSchema = new Schema({
     timestamps: true,
     versionKey: false
 })
+
+userSchema.statics.encryptPassword = (password)=>{
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+}
 
 export default model('User', userSchema)
