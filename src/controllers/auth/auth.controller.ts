@@ -77,5 +77,10 @@ export const signIn = async (req: Request, res: Response) => {
 };
 
 export const profile = async (req: Request, res: Response) => {
-    
+    const user = await User.findById(req.userId)
+    if(!user) return res.status(404).json({
+      msg: 'User not found!'
+    })
+
+    return res.json(user)
 };
