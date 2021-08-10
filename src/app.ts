@@ -1,5 +1,6 @@
 import config from "./config/config";
 import express, { Application } from "express";
+import cors from "cors";
 import morgan from "morgan";
 
 import authRoutes from "./routes/auth.routes";
@@ -11,6 +12,7 @@ createRole();
 
 app.set("port", config.port);
 
+app.use(cors());
 app.use(express.json());
 app.use(
   express.urlencoded({
