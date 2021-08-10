@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-//import { ROLES } from "../models/Role";
+import { ROLES } from "../models/Role";
 import User from "../models/User";
 
 export const checkUsernameAndEmailExists = async (
@@ -22,4 +22,18 @@ export const checkUsernameAndEmailExists = async (
   next();
 };
 
+export const checkRolesExists = async (req: Request, res: Response, next: NextFunction)=>{
+    const arrayRoles: Array<string> = req.body.roles 
 
+    if(req.body.roles) {
+        for (let i = 0; i < arrayRoles.length; i++) {
+            if(!ROLES.includes(arrayRoles[i])) {
+                return res.status(401).json({
+                    msg: `Role ${arrayRoles[i]} does not exixts`
+                })
+            }           
+        }
+    }
+
+    next()
+}
