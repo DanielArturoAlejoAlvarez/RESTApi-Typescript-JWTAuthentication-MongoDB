@@ -1,9 +1,7 @@
-import config from "../../config/config";
-
 import User, { IUser } from "../../models/User";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import Role from "models/Role";
+import Role from "../../models/Role";
 
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -33,7 +31,7 @@ export const signUp = async (req: Request, res: Response) => {
     const user = await newUser.save();
     console.log(user);
 
-    const token = jwt.sign({ id: user._id }, config.secret_key, {
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY || 'secretkey', {
       expiresIn: 60 * 60,
     });
 
@@ -64,7 +62,7 @@ export const signIn = async (req: Request, res: Response) => {
         })
     }
 
-    const token = jwt.sign({id: user._id}, config.secret_key, {
+    const token = jwt.sign({id: user._id},  process.env.SECRET_KEY || 'secretkey', {
         expiresIn: 60*60
     })
 

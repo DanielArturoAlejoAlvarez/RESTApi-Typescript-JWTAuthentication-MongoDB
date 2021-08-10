@@ -1,4 +1,4 @@
-import config from "./config/config";
+//import config from "./config/config";
 import express, { Application } from "express";
 import morgan from "morgan";
 
@@ -9,7 +9,7 @@ const app: Application = express();
 
 createRole()
 
-app.set("port", config.port);
+app.set("port", process.env.PORT || 3000);
 
 app.use(express.json());
 app.use(
