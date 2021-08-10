@@ -72,5 +72,3 @@ export const signIn = async (req: Request, res: Response) => {
     })
 
 };
-
-export const profile = async (req: Request, res: Response) => {};
