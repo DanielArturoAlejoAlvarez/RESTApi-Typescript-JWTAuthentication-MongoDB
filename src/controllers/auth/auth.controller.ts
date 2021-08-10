@@ -72,15 +72,16 @@ export const signIn = async (req: Request, res: Response) => {
   });
 
   return res.header("auth-token", token).status(200).json({
-    msg: "User is loggedin!"
+    msg: "User is loggedin!",
   });
 };
 
 export const profile = async (req: Request, res: Response) => {
-    const user = await User.findById(req.userId)
-    if(!user) return res.status(404).json({
-      msg: 'User not found!'
-    })
+  const user = await User.findById(req.userId);
+  if (!user)
+    return res.status(404).json({
+      msg: "User not found!",
+    });
 
-    return res.json(user)
+  return res.json(user);
 };

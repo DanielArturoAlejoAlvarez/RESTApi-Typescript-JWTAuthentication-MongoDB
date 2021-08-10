@@ -2,12 +2,12 @@ import config from "./config/config";
 import express, { Application } from "express";
 import morgan from "morgan";
 
-import authRoutes from './routes/auth.routes'
-import { createRole } from './libs/setup'
+import authRoutes from "./routes/auth.routes";
+import { createRole } from "./libs/setup";
 
 const app: Application = express();
 
-createRole()
+createRole();
 
 app.set("port", config.port);
 
@@ -19,6 +19,6 @@ app.use(
 );
 app.use(morgan("dev"));
 
-app.use('/api/auth', authRoutes)
+app.use("/api/auth", authRoutes);
 
 export default app;

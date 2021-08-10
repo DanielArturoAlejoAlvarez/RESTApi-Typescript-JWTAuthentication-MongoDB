@@ -3,9 +3,9 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 export interface IPayload {
-    id: string;
-    iat: number;
-    exp: number;
+  id: string;
+  iat: number;
+  exp: number;
 }
 
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
@@ -19,10 +19,10 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
 
     const payload = jwt.verify(token, config.secret_key) as IPayload;
 
-    req.userId = payload.id
+    req.userId = payload.id;
 
     console.log(payload);
-    console.log(req.userId)
+    console.log(req.userId);
 
     next();
   } catch (err) {
