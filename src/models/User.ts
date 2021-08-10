@@ -50,12 +50,12 @@ const userSchema = new Schema({
     versionKey: false
 })
 
-userSchema.statics.encryptPassword = async (password: string): Promise<string>=>{
+userSchema.methods.encryptPassword = async (password: string): Promise<string>=>{
     const salt = await bcrypt.genSaltSync(10)
     return bcrypt.hashSync(password, salt)
 }
 
-userSchema.statics.validatePassword = async function(password: string, receivePassword: string): Promise<boolean> {
+userSchema.methods.validatePassword = async (password: string, receivePassword: string): Promise<boolean>=>{
     return await bcrypt.compareSync(password, receivePassword)
 }
 

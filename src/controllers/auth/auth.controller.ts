@@ -10,6 +10,7 @@ export const signUp = async (req: Request, res: Response) => {
     console.log(req.body);
     const { displayName, email, username, password, avatar, roles, status } =
       req.body;
+
     const newUser: IUser = new User({
       displayName,
       email,
@@ -19,7 +20,7 @@ export const signUp = async (req: Request, res: Response) => {
       status,
     });
 
-    newUser.encryptPassword(password);
+    newUser.password = (await newUser.encryptPassword(password)).toString();
 
     //roles
     if (req.body.roles) {
@@ -37,9 +38,8 @@ export const signUp = async (req: Request, res: Response) => {
       expiresIn: 60 * 60,
     });
 
-    return res.status(200).json({
+    return res.header("auth-token", token).status(200).json({
       msg: "User registered successfully!",
-      token,
       user,
     });
   } catch (err) {
@@ -49,30 +49,33 @@ export const signUp = async (req: Request, res: Response) => {
 };
 
 export const signIn = async (req: Request, res: Response) => {
-    const user = await User.findOne({email: req.body.email})
-    if (!user) {
-        return res.status(400).json({
-            msg: 'User not found!'
-        })
-    }
-    const matchPassword = await user.validatePassword(req.body.password, user.password)
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(400).json({
+      msg: "User not found!",
+    });
+  }
+  const matchPassword = await user.validatePassword(
+    req.body.password,
+    user.password
+  );
 
-    if (!matchPassword) {
-        return res.status(401).json({
-            token: null,
-            msg: 'Password is invalid!'
-        })
-    }
+  if (!matchPassword) {
+    return res.status(401).json({
+      token: null,
+      msg: "Password is invalid!",
+    });
+  }
 
-    const token = jwt.sign({id: user._id}, config.secret_key, {
-        expiresIn: 60*60
-    })
+  const token = jwt.sign({ id: user._id }, config.secret_key, {
+    expiresIn: 60 * 60,
+  });
 
-    return res.status(200).json({
-        msg: 'User is loggedin!',
-        token
-    })
-
+  return res.header("auth-token", token).status(200).json({
+    msg: "User is loggedin!"
+  });
 };
 
-export const profile = async (req: Request, res: Response) => {};
+export const profile = async (req: Request, res: Response) => {
+    
+};
