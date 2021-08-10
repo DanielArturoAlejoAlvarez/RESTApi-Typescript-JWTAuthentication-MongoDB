@@ -3,6 +3,7 @@ import config from '../../config/config'
 import User,{IUser} from '../../models/User'
 import { Request,Response } from 'express'
 import jwt from 'jsonwebtoken'
+import Role from 'models/Role'
 
 export const signUp = async (req: Request,res: Response)=>{
 
@@ -19,6 +20,16 @@ export const signUp = async (req: Request,res: Response)=>{
         })
 
         newUser.encryptPassword(password)
+
+        //roles
+        if (req.body.roles) {
+            const arrayRoles = await Role.find({name: {$in: roles}})
+            newUser.roles = arrayRoles.map((role: any)=>role._id)
+        }else {
+            const role = Role.findOne({name: "USER"})
+            newUser.roles = [role._id]
+        }
+
         const user = await newUser.save()
         console.log(user)
 
@@ -26,7 +37,7 @@ export const signUp = async (req: Request,res: Response)=>{
             expiresIn: 60*60
         })
 
-        return res.json({
+        return res.status(200).json({
             msg: 'User registered successfully!',
             token,
             user

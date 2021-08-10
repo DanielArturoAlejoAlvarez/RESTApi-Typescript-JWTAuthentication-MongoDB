@@ -7,6 +7,7 @@ export interface IUser extends Document {
     username: string;
     password: string;
     avatar: string;
+    roles: any;
     status: boolean;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string, receivePassword: string): Promise<boolean> 
