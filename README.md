@@ -185,6 +185,43 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
     return res.status(500).json(err);
   }
 };
+
+export const checkRolesExists = async (req: Request, res: Response, next: NextFunction)=>{
+    const arrayRoles: Array<string> = req.body.roles 
+
+    if(req.body.roles) {
+        for (let i = 0; i < arrayRoles.length; i++) {
+            if(!ROLES.includes(arrayRoles[i])) {
+                return res.status(401).json({
+                    msg: `Role ${arrayRoles[i]} does not exixts`
+                })
+            }           
+        }
+    }
+
+    next()
+}
+
+export const isSuperAdmin = async (req: Request,res: Response,next: NextFunction)=>{
+    try {
+        const user = await User.findById(req.userId)
+
+        const roles = await Role.findOne({_id: {$in: user?.roles}})
+
+        for (let i = 0; i < roles.length; i++) {
+            if (roles[i].name==='SUPERADMIN') {
+                next()
+                return
+            }      
+        }
+        return res.status(403).json({
+            msg: 'Require SUPERADMIN Role!'
+        })
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json(err)
+    }
+}
 ...
 ```
 
