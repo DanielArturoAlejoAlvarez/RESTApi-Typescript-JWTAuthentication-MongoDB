@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../models/User";
+import Role from "../models/Role";
+import User, { IUser } from "../models/User";
 
 export const getUsers = async (req: Request, res: Response) => {
   const users = await User.find().populate("roles");
@@ -17,7 +18,7 @@ export const saveUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { displayName, email, username, password, avatar, status } =
+  const { displayName, email, username, password, avatar, roles } =
     req.body;
 
   const newUser = new User({
@@ -26,8 +27,17 @@ export const saveUser = async (
     username,
     password,
     avatar,
-    status,
   });
+
+  newUser.password = (await newUser.encryptPassword(password)).toString();
+
+  if (req.body.roles) {
+    const arrayRoles = await Role.find({ name: { $in: roles } });
+    newUser.roles = arrayRoles.map((role: any) => role._id);
+  } else {
+    const role = await Role.findOne({ name: "USER" });
+    newUser.roles = [role._id];
+  }
 
   const user = await newUser.save();
 
@@ -39,14 +49,33 @@ export const saveUser = async (
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction)=>{
   const { idUser } = req.params 
+  const { displayName, email, username, password, avatar, roles, status } =
+  req.body;
 
-  const updUser = await User.findByIdAndUpdate(idUser, req.body, {
+  const updUser: any = {
+    displayName,
+    email,
+    username,
+    password,
+    avatar,
+    status
+  };
+
+  if (req.body.roles) {
+    const arrayRoles = await Role.find({ name: { $in: roles } });
+    updUser.roles = arrayRoles.map((role: any) => role._id);
+  } else {
+    const role = await Role.findOne({ name: "USER" });
+    updUser.roles = [role._id];
+  }
+
+  const user = await User.findByIdAndUpdate(idUser, updUser, {
     new: true
   })
 
   return res.status(201).json({
     msg: 'User updated successfully!',
-    user: updUser
+    user
   })
 }
 

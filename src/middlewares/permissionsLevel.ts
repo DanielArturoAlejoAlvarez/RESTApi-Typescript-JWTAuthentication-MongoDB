@@ -7,10 +7,10 @@ export const isSuperAdmin = async (req: Request,res: Response,next: NextFunction
     try {
         const user = await User.findById(req.userId)
 
-        const roles = await Role.findOne({_id: {$in: user?.roles}})
+        const arrRoles = await Role.find({_id: {$in: user?.roles}})
 
-        for (let i = 0; i < roles.length; i++) {
-            if (roles[i].name==='SUPERADMIN') {
+        for (let i = 0; i < arrRoles.length; i++) {
+            if (arrRoles[i].name==='SUPERADMIN') {
                 next()
                 return
             }      
@@ -28,10 +28,10 @@ export const isAdmin = async (req: Request,res: Response,next: NextFunction)=>{
     try {
         const user = await User.findById(req.userId)
 
-        const roles = await Role.findOne({_id: {$in: user?.roles}})
+        const arrRoles = await Role.find({_id: {$in: user?.roles}})
 
-        for (let i = 0; i < roles.length; i++) {
-            if (roles[i].name==='ADMIN') {
+        for (let i = 0; i < arrRoles.length; i++) {
+            if (arrRoles[i].name==='ADMIN') {
                 next()
                 return
             }      

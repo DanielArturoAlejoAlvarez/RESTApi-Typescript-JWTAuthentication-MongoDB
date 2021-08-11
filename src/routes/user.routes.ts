@@ -14,8 +14,8 @@ const router: Router = Router();
 
 router.get("/", getUsers);
 router.get("/:idUser", getUser);
-router.post("/", [isAuth, checkRolesExists, isSuperAdmin, isAdmin], saveUser);
-router.put("/:idUser", [isAuth, checkRolesExists, isSuperAdmin, isAdmin], updateUser);
-router.delete("/:idUser", [isAuth, checkRolesExists, isSuperAdmin], deleteUser);
+router.post("/", [isAuth, checkRolesExists, isAdmin], saveUser);
+router.put("/:idUser", [isAuth, checkRolesExists, isAdmin], updateUser);
+router.delete("/:idUser", [isAuth, checkRolesExists, isSuperAdmin, isAdmin], deleteUser);
 
 export default router;

@@ -8,8 +8,7 @@ import Role from "../../models/Role";
 export const signUp = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
-    const { displayName, email, username, password, avatar, roles, status } =
-      req.body;
+    const { displayName, email, username, password, roles, avatar } = req.body;
 
     const newUser: IUser = new User({
       displayName,
@@ -17,20 +16,14 @@ export const signUp = async (req: Request, res: Response) => {
       username,
       password,
       avatar,
-      status,
     });
 
     newUser.password = (await newUser.encryptPassword(password)).toString();
 
     //roles
-    if (req.body.roles) {
-      const arrayRoles = await Role.find({ name: { $in: roles } });
-      newUser.roles = arrayRoles.map((role: any) => role._id);
-    } else {
-      const role = Role.findOne({ name: "USER" });
-      newUser.roles = [role._id];
-    }
-
+    const role = await Role.findOne({ name: "USER" });
+    newUser.roles = [role._id];
+    
     const user = await newUser.save();
     console.log(user);
 
@@ -77,7 +70,7 @@ export const signIn = async (req: Request, res: Response) => {
 };
 
 export const profile = async (req: Request, res: Response) => {
-  const user = await User.findById(req.userId, {password: 0});
+  const user = await User.findById(req.userId, { password: 0 });
   if (!user)
     return res.status(404).json({
       msg: "User not found!",
