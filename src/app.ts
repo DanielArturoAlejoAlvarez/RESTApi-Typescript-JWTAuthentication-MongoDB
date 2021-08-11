@@ -1,4 +1,4 @@
-//import config from "./config/config";
+import config from "./config/config";
 import express, { Application } from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -11,7 +11,7 @@ const app: Application = express();
 
 createRole();
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", config.port);
 
 app.use(cors());
 app.use(express.json());

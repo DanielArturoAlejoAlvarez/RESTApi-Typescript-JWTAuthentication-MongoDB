@@ -1,4 +1,4 @@
-//import config from "../../config/config";
+import config from "../../config/config";
 
 import User, { IUser } from "../../models/User";
 import { Request, Response } from "express";
@@ -27,7 +27,7 @@ export const signUp = async (req: Request, res: Response) => {
     const user = await newUser.save();
     console.log(user);
 
-    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY || 'secretkey', {
+    const token = jwt.sign({ id: user._id }, config.secret_key, {
       expiresIn: 60 * 60,
     });
 
@@ -60,7 +60,7 @@ export const signIn = async (req: Request, res: Response) => {
     });
   }
 
-  const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY || 'secretkey', {
+  const token = jwt.sign({ id: user._id }, config.secret_key, {
     expiresIn: 60 * 60,
   });
 
