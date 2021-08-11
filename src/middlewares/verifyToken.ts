@@ -1,4 +1,4 @@
-import config from "../config/config";
+//import config from "../config/config";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
@@ -17,7 +17,7 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
         msg: "Access denied!",
       });
 
-    const payload = jwt.verify(token, config.secret_key) as IPayload;
+    const payload = jwt.verify(token, process.env.SECRET_KEY || 'secretkey') as IPayload;
 
     req.userId = payload.id;
 
