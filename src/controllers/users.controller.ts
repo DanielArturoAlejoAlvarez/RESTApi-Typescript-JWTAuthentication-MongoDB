@@ -18,8 +18,7 @@ export const saveUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { displayName, email, username, password, avatar, roles } =
-    req.body;
+  const { displayName, email, username, password, avatar, roles } = req.body;
 
   const newUser = new User({
     displayName,
@@ -47,10 +46,14 @@ export const saveUser = async (
   });
 };
 
-export const updateUser = async (req: Request, res: Response, next: NextFunction)=>{
-  const { idUser } = req.params 
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { idUser } = req.params;
   const { displayName, email, username, password, avatar, roles, status } =
-  req.body;
+    req.body;
 
   const updUser: any = {
     displayName,
@@ -58,7 +61,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
     username,
     password,
     avatar,
-    status
+    status,
   };
 
   if (req.body.roles) {
@@ -70,23 +73,25 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
   }
 
   const user = await User.findByIdAndUpdate(idUser, updUser, {
-    new: true
-  })
+    new: true,
+  });
 
   return res.status(201).json({
-    msg: 'User updated successfully!',
-    user
-  })
-}
+    msg: "User updated successfully!",
+    user,
+  });
+};
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction)=>{
-  const { idUser } = req.params 
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { idUser } = req.params;
 
-  await User.findByIdAndDelete(idUser)
+  await User.findByIdAndDelete(idUser);
 
   return res.status(200).json({
-    msg: 'User deleted successfully!'
-  })
-}
-
-
+    msg: "User deleted successfully!",
+  });
+};
