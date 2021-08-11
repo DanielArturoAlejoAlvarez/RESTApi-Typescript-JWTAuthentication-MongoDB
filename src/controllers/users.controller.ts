@@ -36,3 +36,16 @@ export const saveUser = async (
     user,
   });
 };
+
+export const updateUser = async (req: Request, res: Response, next: NextFunction)=>{
+  const { idUser } = req.params 
+
+  const updUser = await User.findByIdAndUpdate(idUser, req.body, {
+    new: true
+  })
+
+  return res.status(201).json({
+    msg: 'User updated successfully!',
+    user: updUser
+  })
+}
