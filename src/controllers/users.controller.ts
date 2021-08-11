@@ -49,3 +49,15 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
     user: updUser
   })
 }
+
+export const deleteUser = async (req: Request, res: Response, next: NextFunction)=>{
+  const { idUser } = req.params 
+
+  await User.findByIdAndDelete(idUser)
+
+  return res.status(200).json({
+    msg: 'User deleted successfully!'
+  })
+}
+
+
